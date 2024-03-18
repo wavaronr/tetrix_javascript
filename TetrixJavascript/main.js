@@ -46,7 +46,7 @@ const board = [
 ];
 
 const piece = {
-  position: { x: 5, y: 5 },
+  position: { x: 7, y: 1 },
   shape: [
     [1, 1],
     [1, 1],
@@ -107,6 +107,10 @@ function update(time = 0) {
   if (dropCounter > 1000) {
     piece.position.y++;
     dropCounter = 0;
+    if (checkcollision()) {
+      piece.position.y--;
+      solidifypiece();
+    }
   }
   draw();
   window.requestAnimationFrame(update);
