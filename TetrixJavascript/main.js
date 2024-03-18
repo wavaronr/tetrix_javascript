@@ -53,6 +53,49 @@ const piece = {
   ],
 };
 
+const PIECES = [
+  // # Pieza cuadrada (O)
+  [
+    [1, 1],
+    [1, 1],
+  ],
+
+  // # Pieza de línea recta (I)
+  [[1], [1], [1], [1]],
+
+  // # Pieza en forma de L (L)
+  [
+    [1, 0],
+    [1, 0],
+    [1, 1],
+  ],
+
+  // # Pieza en forma de J (J)
+  [
+    [0, 1],
+    [0, 1],
+    [1, 1],
+  ],
+
+  // # Pieza en forma de T (T)
+  [
+    [0, 1, 0],
+    [1, 1, 1],
+  ],
+
+  // # Pieza en forma de S (S)
+  [
+    [0, 1, 1],
+    [1, 1, 0],
+  ],
+
+  // # Pieza en forma de Z (Z)
+  [
+    [1, 1, 0],
+    [0, 1, 1],
+  ],
+];
+
 let dropCounter = 0;
 let lastTime = 0;
 function update(time = 0) {
@@ -127,13 +170,15 @@ function checkcollision() {
 }
 
 function solidifypiece() {
-  piece.shape.forEach((row, x) => {
-    row.forEach((value, y) => {
+  piece.shape.forEach((row, y) => {
+    row.forEach((value, x) => {
       if (value === 1) {
         board[y + piece.position.y][x + piece.position.x] = 1;
       }
     });
   });
+
+  piece.shape = PIECES[Math.floor(Math.random() * PIECES.length)];
   piece.position.x = 0;
   piece.position.y = 0;
 }
