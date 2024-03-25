@@ -45,13 +45,13 @@ const board = [
   [1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1],
 ];
 
-const piece = {
-  position: { x: 7, y: 1 },
-  shape: [
-    [1, 1],
-    [1, 1],
-  ],
-};
+// const piece = {
+//   position: { x: 7, y: 1 },
+//   shape: [
+//     [1, 1],
+//     [1, 1],
+//   ],
+// };
 
 const PIECES = [
   // # Pieza cuadrada (O)
@@ -95,6 +95,11 @@ const PIECES = [
     [0, 1, 1],
   ],
 ];
+
+const piece = {
+  shape: PIECES[Math.floor(Math.random() * PIECES.length)],
+  position: { x: 2, y: 0 },
+};
 
 let dropCounter = 0;
 let lastTime = 0;
@@ -185,6 +190,11 @@ function solidifypiece() {
   piece.shape = PIECES[Math.floor(Math.random() * PIECES.length)];
   piece.position.x = 0;
   piece.position.y = 0;
+
+  if (checkcollision()) {
+    window.alert("Game Over !!");
+    board.forEach((row) => row.fill(0));
+  }
 }
 
 function removeRows() {
