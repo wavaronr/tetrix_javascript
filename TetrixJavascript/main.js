@@ -45,6 +45,7 @@ const board = [
   [1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1],
 ];
 
+let timeCurrent = 1000;
 // const piece = {
 //   position: { x: 7, y: 1 },
 //   shape: [
@@ -109,7 +110,7 @@ function update(time = 0) {
 
   dropCounter += deltaTime;
 
-  if (dropCounter > 1000) {
+  if (dropCounter > timeCurrent) {
     piece.position.y++;
     dropCounter = 0;
     if (checkcollision()) {
@@ -166,6 +167,17 @@ document.addEventListener("keydown", (event) => {
       removeRows();
     }
   }
+  if (event.key === "ArrowUp") {
+    const rotated = [];
+    for (let i = 0; i < piece.shape[0].length; i++) {
+      const row = [];
+      for (let j = piece.shape.length - 1; j >= 0; j--) {
+        row.push(piece.shape[j][i]);
+      }
+      rotated.push(row);
+    }
+    piece.shape = rotated;
+  }
 });
 
 function checkcollision() {
@@ -188,12 +200,13 @@ function solidifypiece() {
   });
 
   piece.shape = PIECES[Math.floor(Math.random() * PIECES.length)];
-  piece.position.x = 0;
+  piece.position.x = Math.floor(piece.shape.length * 2);
   piece.position.y = 0;
 
   if (checkcollision()) {
     window.alert("Game Over !!");
     board.forEach((row) => row.fill(0));
+    timeCurrent = 1000;
   }
 }
 
@@ -209,6 +222,8 @@ function removeRows() {
     board.splice(y, 1);
     const newRow = Array(BOARD_HEIGHT).fill(0);
     board.unshift(newRow);
+    console.log(timeCurrent);
+    timeCurrent >= 100 ? (timeCurrent = timeCurrent - 100) : (timeCurrent = 0);
   });
 }
 
