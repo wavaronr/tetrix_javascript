@@ -161,6 +161,8 @@ document.addEventListener("keydown", (event) => {
   }
   if (event.key === "ArrowDown") {
     piece.position.y++;
+    // console.log(checkcollision()?.length);
+
     if (checkcollision()) {
       piece.position.y--;
       solidifypiece();
@@ -176,7 +178,14 @@ document.addEventListener("keydown", (event) => {
       }
       rotated.push(row);
     }
+
+    const previusShape = piece.shape;
     piece.shape = rotated;
+
+    if (checkcollision()) {
+      piece.shape = previusShape;
+      piece.position.x--;
+    }
   }
 });
 
@@ -189,6 +198,7 @@ function checkcollision() {
     });
   });
 }
+console.log(checkcollision());
 
 function solidifypiece() {
   piece.shape.forEach((row, y) => {
@@ -222,7 +232,6 @@ function removeRows() {
     board.splice(y, 1);
     const newRow = Array(BOARD_HEIGHT).fill(0);
     board.unshift(newRow);
-    console.log(timeCurrent);
     timeCurrent >= 100 ? (timeCurrent = timeCurrent - 100) : (timeCurrent = 0);
   });
 }
